@@ -10,6 +10,14 @@ import mongoose from 'mongoose';
 import Bcrypt from 'bcryptjs';
 //
 describe('The User model', () => {
+  // create new test user
+  const user = {
+    name: 'Test User',
+    email: 'test@user.com',
+    password: 'password'
+  };
+  //
+  let createdUser;
   // run this before all tests
   beforeAll(async () => {
     // connect to db
@@ -17,31 +25,16 @@ describe('The User model', () => {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
+    //
+    createdUser = await User.create(user);
   });
   //
   it('should hash the user password before saving to the db', async () => {
-    // create new test user
-    const user = {
-      name: 'Test User',
-      email: 'test@user.com',
-      password: 'password'
-    };
-    //
-    // create new user from User Model
-    const createdUser = await User.create(user);
     // comparse sync compares unhashed string with hashed string
     expect(Bcrypt.compareSync(user.password, createdUser.password)).toBe(true);
   });
   //
   it('should set the email confirm code for the user before saving to the db', async () => {
-    // create new test user
-    const user = {
-      name: 'Test User',
-      email: 'test@user.com',
-      password: 'password'
-    };
-    // create new user from User Model
-    const createdUser = await User.create(user);
     // confirmcode === String
     expect(createdUser.emailConfirmCode).toEqual(expect.any(String));
   });
