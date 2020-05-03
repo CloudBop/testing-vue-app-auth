@@ -8,6 +8,9 @@ import User from '@models/User';
 import mongoose from 'mongoose';
 //
 import Bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+// server/config - signiture for jwt
+import config from '@config';
 //
 describe('The User model', () => {
   // create new test user
@@ -37,6 +40,21 @@ describe('The User model', () => {
   it('should set the email confirm code for the user before saving to the db', async () => {
     // confirmcode === String
     expect(createdUser.emailConfirmCode).toEqual(expect.any(String));
+  });
+  //
+  describe('the generate token method', () => {
+    it('should generate a valid jwt for a user', () => {
+      //
+      const token = createdUser.generateToken();
+      //
+      const { id } = jwt.verify(token, config.jwtSecret);
+      //
+      // mongoose User Model _id: === typeof object
+      // convert to string
+      const stringedId = JSON.parse(JSON.stringify(createdUser._id));
+      //
+      expect(id).toEqual(stringedId);
+    });
   });
   //
   afterAll(async () => {
