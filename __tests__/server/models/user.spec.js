@@ -24,7 +24,8 @@ describe('The User model', () => {
     const createdUser = await User.create(user);
     // comparse sync compares unhashed string with hashed string
     expect(Bcrypt.compareSync(user.password, createdUser.password)).toBe(true);
-    //
+    // close connection
+    await mongoose.connection.close();
   });
 });
 // by default jest is setup for jsdom. The comment at top of file tell jest to test for node env.
