@@ -10,6 +10,7 @@
     "build:client": "webpack --production",
     "start": "node dist/index.js",
     "test": "jest",
+    "test:e2e": "cypress open",
     "mongod-start": "/Users/colinrowntree/mongodb/bin/mongod --dbpath=/Users/colinrowntree/mongodb-data"
   },
   "dependencies": {
