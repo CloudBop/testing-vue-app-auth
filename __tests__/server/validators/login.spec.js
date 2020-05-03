@@ -6,15 +6,7 @@
 import loginValidator from '@validators/login';
 //
 // mock Express response fn
-class Response {
-  status(status) {
-    this.status = status;
-    return this;
-  }
-  json(data) {
-    return data;
-  }
-}
+import Response from '@tests/utils/response';
 //
 describe('the login validator', () => {
   //
@@ -55,10 +47,12 @@ describe('the login validator', () => {
     // 422 error code
     expect(statusSpy).toHaveBeenCalledWith(422);
     // yup api
-    expect(jsonSpy).toHaveBeenCalled({
+    expect(jsonSpy).toHaveBeenCalledWith({
       message: 'Validation failed.',
       data: {
-        email: 'email is a required field'
+        errors: {
+          email: 'email is a required field'
+        }
       }
     });
   });

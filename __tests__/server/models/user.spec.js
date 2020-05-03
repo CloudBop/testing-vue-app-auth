@@ -5,7 +5,8 @@
  */
 import User from '@models/User';
 //
-import mongoose from 'mongoose';
+import { connect, disconnect } from '@tests/utils/mongoose';
+
 //
 import Bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -24,10 +25,7 @@ describe('The User model', () => {
   // run this before all tests
   beforeAll(async () => {
     // connect to db
-    await mongoose.connect('mongodb://localhost:27017/auth-app_test', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    await connect();
     //
     createdUser = await User.create(user);
   });
@@ -59,7 +57,7 @@ describe('The User model', () => {
   //
   afterAll(async () => {
     // close connection
-    await mongoose.connection.close();
+    await disconnect();
   });
 });
 // by default jest is setup for jsdom. The comment at top of file tell jest to test for node env.
